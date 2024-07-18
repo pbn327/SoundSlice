@@ -1,8 +1,12 @@
 import streamlit as st
+import os
 import re
 import requests
 from PIL import Image
 from io import BytesIO
+
+# Ruta donde se guardarán los archivos subidos
+UPLOADS_PATH = "frontend/uploaded_files"
 
 st.markdown(
     f"""
@@ -17,12 +21,12 @@ st.markdown(
 
 st.title("SoundSlice - Separador de Canciones")
 
-## Función para validar el enlace de YouTube
+## Regex para validar el enlace de YouTube
 def is_valid_youtube_link(link):
     youtube_regex = r'^(https?://)?(www\.)?youtube\.com/(watch\?v=|embed/|v/|user\/.+\?v=|[^/]+\?v=)([a-zA-Z0-9_-]{11}).*$'
     return bool(re.match(youtube_regex, link))
 
-## Función para obtener la miniatura de YouTube
+## Miniatura de YouTube
 def get_youtube_thumbnail(link):
     video_id = re.search(r'[?&]v=([^&]+)', link).group(1)
     thumbnail_url = f'https://img.youtube.com/vi/{video_id}/0.jpg'
@@ -42,9 +46,13 @@ with col1:
             st.image(thumbnail, caption='Thumbnail de la canción')
         else:
             st.write("El enlace de YouTube no es válido.")
-    uploaded_file = st.file_uploader("Arrastra y suelta un archivo MP3", type=["mp3"])
+    uploaded_file = st.file_uploader("Arrastra y suelta un archivo WAV", type=["wav"])
     if uploaded_file:
-        st.write(f"Archivo subido: {uploaded_file.name}")
+        # Guardar el archivo en la carpeta de subidas
+        file_path = os.path.join(UPLOADS_PATH, uploaded_file.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.success(f"Archivo '{uploaded_file.name}' subido correctamente.")
 
 ## Segunda sección: Pistas Disponibles y Sube tus Pistas
 with col2:
@@ -64,8 +72,13 @@ with col2:
         )
 
     st.header("Sube tus Pistas")
-    uploaded_files = st.file_uploader("Arrastra y suelta tus pistas", type=["mp3"], accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Arrastra y suelta tus pistas", type=["wav"], accept_multiple_files=True)
     if uploaded_files:
-        st.write(f"Has subido {len(uploaded_files)} pistas.")
+        for uploaded_file in uploaded_files:
+            # Guardar cada archivo en la carpeta de subidas
+            file_path = os.path.join(UPLOADS_PATH, uploaded_file.name)
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+        st.success(f"Has subido {len(uploaded_files)} pistas.")
     else:
         st.write("Aún no has subido tus pistas.")
