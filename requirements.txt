@@ -1,3 +1,5 @@
 fastapi
 uvicorn
+spleeter
+ffmpeg-python
 #meter los del spleeter
