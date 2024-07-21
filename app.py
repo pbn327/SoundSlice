@@ -6,10 +6,10 @@ import os
 separator = Separator('spleeter:4stems')
 
 # Path to the input song
-input_song_path = 'raw_data/track5.wav'  # Replace with your song file path
+input_song_path = 'frontend/uploaded_files/track3.wav'  # Replace with your song file path
 
 # Path to the directory where you want to save the separated tracks
-output_directory = 'tracks separados'
+output_directory = 'frontend/separated_files'
 
 # Initialize the custom audio adapter
 audio_adapter = CustomFFMPEGProcessAudioAdapter()
