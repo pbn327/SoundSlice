@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import requests
 from io import BytesIO
+import zipfile
 
 # Ruta donde se guardarán los archivos subidos
 UPLOADS_PATH = "frontend/uploaded_files"
@@ -19,11 +20,6 @@ st.markdown(
 )
 
 st.title("SoundSlice - Separador de Canciones")
-
-## Regex para validar el enlace de YouTube
-def is_valid_youtube_link(link):
-    youtube_regex = r'^(https?://)?(www\.)?youtube\.com/(watch\?v=|embed/|v/|user\/.+\?v=|[^/]+\?v=)([a-zA-Z0-9_-]{11}).*$'
-    return bool(re.match(youtube_regex, link))
 
 ## Miniatura de YouTube
 def get_youtube_thumbnail(link):
@@ -54,7 +50,7 @@ with col1:
         st.success(f"Archivo '{uploaded_file.name}' subido correctamente.")
 
         # Llamar a la API para separar las pistas (esto es solo un ejemplo, asegúrate de que tu API esté correctamente configurada)
-        response = requests.post(f'http://localhost:8000/separate', params={'wav_file': uploaded_file.name})
+        response = requests.post(f'http://localhost:8000/separate', json={'wav_file': uploaded_file.name})
         if response.status_code == 200:
             st.success("Pistas separadas correctamente. Selecciona las pistas para descargar.")
         else:
@@ -78,13 +74,21 @@ with col2:
             if st.checkbox(track_file):
                 selected_tracks.append(os.path.join(track_folder_path, track_file))
 
+        # En la sección de descarga de pistas seleccionadas
         if selected_tracks:
-            st.download_button(
-                label="Descargar Pistas Seleccionadas",
-                data=b''.join(open(file, 'rb').read() for file in selected_tracks),
-                file_name="pistas_seleccionadas.zip",
-                mime="application/zip",
-            )
+            zip_path = "frontend/Almacen/pistas_seleccionadas.zip"
+
+            with zipfile.ZipFile(zip_path, 'w') as zipf:
+                for file in selected_tracks:
+                    zipf.write(file, os.path.basename(file))
+
+            with open(zip_path, 'rb') as f:
+                st.download_button(
+                    label="Descargar Pistas Seleccionadas",
+                    data=f.read(),
+                    file_name="pistas_seleccionadas.zip",
+                    mime="application/zip",
+                )
         else:
             st.write("Selecciona las pistas que deseas descargar.")
 
