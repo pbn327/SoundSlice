@@ -1,35 +1,44 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
 import os
-from utils import extract_filename
+from utils import separate_tracks, extract_filename
 
 app = FastAPI()
 
 # Ruta donde se almacenan los archivos separados
-SEPARATED_FILES_PATH = "frontend/separated_files"
+SEPARATED_FILES_PATH = "/home/luis/code/pbn327/SoundSlice/frontend/separated_files"
+UPLOADS_PATH = "/home/luis/code/pbn327/SoundSlice/frontend/uploaded_files"
 
-class WavFileRequest(BaseModel):
-    wav_file: str
-
-@app.get('/')
+@app.post('/')
 def index():
-    return {'ok': True}
+    return {'ok': True} #regresar el output del separate cuando el usuario hace post
 
-@app.post('/separate')
-def get_separated_files(request: WavFileRequest):
+@app.get('/separate')
+def separate_file(wav_file: str):
+    file_path = os.path.join(UPLOADS_PATH, wav_file)
+    print(file_path,"base + name_file")
+
+    #/home/luis/code/pbn327/SoundSlice/frontend/uploaded_files/
+    if not os.path.isfile(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+
     # Extraer el nombre base del archivo
-    base_name = extract_filename(request.wav_file)
+    base_name = extract_filename(wav_file)
+    print("nombre de la canción")
+    print(base_name)
 
-    # Directorio donde se encuentran los archivos separados
-    track_folder_path = os.path.join(SEPARATED_FILES_PATH, base_name)
+    # Directorio donde se almacenarán los archivos separados
+    output_directory = os.path.join(SEPARATED_FILES_PATH, base_name)
+    print("directorio con nombre de cancion")
+    print(output_directory)
+    if not os.path.exists(output_directory):
+        print(f"Creando directorio {output_directory}")
+        os.makedirs(output_directory)
 
-    expected_files = ["bass.wav", "drums.wav", "other.wav", "vocals.wav"]
-    files_to_return = []
+    # Separar las pistas
+    print(f"pasando argumentos {file_path} - {output_directory}")
+    #separate_tracks(file_path, output_directory)
+    wavfile_path='/home/luis/code/pbn327/SoundSlice/frontend/uploaded_files/track4.wav'
+    separate_tracks(wavfile_path, output_directory)
 
-    for file_name in expected_files:
-        file_path = os.path.join(track_folder_path, file_name)
-        if os.path.isfile(file_path):
-            files_to_return.append(file_path)
-
-    return {"files": [FileResponse(file) for file in files_to_return]}
+    return {"detail": "Separation done", "output_directory": output_directory}
