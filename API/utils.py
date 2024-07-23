@@ -11,16 +11,13 @@ def separate_tracks(wav_file_path, output_directory):
 
     # Separate the song
     separator.separate_to_file(wav_file_path, output_directory, audio_adapter=audio_adapter)
-
     print("Separation done. Check the output directory for the separated tracks.")
 
 def extract_filename(file_path: str) -> str:
     """
     Extrae el nombre base del archivo sin la extensión.
-
     Args:
         file_path (str): La ruta del archivo, por ejemplo, 'track3.wav'.
-
     Returns:
         str: El nombre base del archivo, por ejemplo, 'track3'.
     """
@@ -31,8 +28,3 @@ def extract_filename(file_path: str) -> str:
     name, _ = os.path.splitext(base_name)
 
     return name
-
-if __name__=='__main__':
-    wavfile_path='/home/luis/code/pbn327/SoundSlice/frontend/uploaded_files/track4.wav'
-    output_directory='/home/luis/code/pbn327/SoundSlice/frontend/separated_files'
-    separate_tracks(wavfile_path,output_directory)
