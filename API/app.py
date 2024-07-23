@@ -15,18 +15,21 @@ class SeparateRequest(BaseModel):
 
 @app.post('/separate')
 def separate_file(request: SeparateRequest):
+
+
     wav_file = request.wav_file
+
     file_path = os.path.join(UPLOADS_PATH, wav_file)
+
     if not os.path.isfile(file_path):
         raise HTTPException(status_code=404, detail="File not found")
 
     # Extraer el nombre base del archivo
     base_name = extract_filename(wav_file)
-    output_directory = os.path.join(SEPARATED_FILES_PATH, base_name)
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
 
     # Separar las pistas
-    separate_tracks(file_path, output_directory)
+    separate_tracks(file_path, SEPARATED_FILES_PATH)
+
+    output_directory = os.path.join(SEPARATED_FILES_PATH, base_name)
 
     return {"detail": "Separation done", "output_directory": output_directory}

@@ -2,3 +2,4 @@ raw_data/
 API/pretrained_models/
 frontend/separated_files
 frontend/uploaded_files
+API/__pycache__/
