@@ -3,5 +3,5 @@ API/pretrained_models/
 frontend/separated_files
 frontend/uploaded_files
 API/__pycache__/
-frontend/Almacen/
-frontend/uploaded_files
+frontend/almacen/
+frontend/tracks
