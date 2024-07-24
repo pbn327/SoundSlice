@@ -1,5 +1,5 @@
 from spleeter.separator import Separator
-from custom_audio_adapter import CustomFFMPEGProcessAudioAdapter
+from API.custom_audio_adapter import CustomFFMPEGProcessAudioAdapter
 import os
 
 def separate_tracks(wav_file_path, output_directory):

@@ -1,7 +1,7 @@
 raw_data/
 API/pretrained_models/
-frontend/separated_files
-frontend/uploaded_files
+API/separated_files
+API/uploaded_files
 API/__pycache__/
 frontend/almacen/
 frontend/tracks
