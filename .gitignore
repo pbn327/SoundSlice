@@ -6,3 +6,4 @@ API/__pycache__/
 frontend/almacen/
 frontend/tracks
 pretrained_models
+guarda_app.py
