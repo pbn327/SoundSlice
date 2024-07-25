@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://cdn.pixabay.com/photo/2017/08/18/18/50/notes-2656005_1280.jpg");
+        background-image: url("https://img.freepik.com/vector-gratis/fondo-pentagrama-musical-brillante-notas-sonido_1017-31220.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -18,7 +18,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.title("SoundSlice - Separador de Canciones")
+st.title("SoundSplit - Separador de Canciones")
 
 st.header("Procesar Música")
 uploaded_file = st.file_uploader("Arrastra y suelta un archivo WAV", type=["wav"])
@@ -47,6 +47,10 @@ if uploaded_file:
     st.write(f"Tamaño del archivo: {file_size:.2f} MB")
 
     st.success(f"Archivo '{uploaded_file.name}' subido correctamente.")
+
+
+    #bass1/drums2/other3/vocals4
+    #batería bajo guitarra voz
 
     # Botón para iniciar la separación de pistas
     if st.button("Separar pistas"):
