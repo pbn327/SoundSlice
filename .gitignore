@@ -5,5 +5,5 @@ API/uploaded_files
 API/__pycache__/
 frontend/almacen/
 frontend/tracks
-pretrained_models
+pretrained_models/
 guarda_app.py
