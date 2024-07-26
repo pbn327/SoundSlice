@@ -16,7 +16,7 @@ os.makedirs(UPLOADS_PATH, exist_ok=True)
 
 @app.get("/")
 def root():
-    return {'greeting': 'Hello'}
+    return {'greeting': 'hi there'}
 
 @app.post('/separate')
 async def separate_file(wav_file: UploadFile = File(...)):
