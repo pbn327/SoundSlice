@@ -48,10 +48,6 @@ if uploaded_file:
 
     st.success(f"Archivo '{uploaded_file.name}' subido correctamente.")
 
-
-    #bass1/drums2/other3/vocals4
-    #batería bajo guitarra voz
-
     # Botón para iniciar la separación de pistas
     if st.button("Separar pistas"):
         with st.spinner('Separando pistas...'):
